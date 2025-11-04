@@ -67,11 +67,7 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
       initial={{ opacity: 0, y: 50 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className={`glass rounded-lg overflow-hidden border ${
-        project.special
-          ? 'border-yellow-500/50 hover:border-yellow-400/80'
-          : 'border-cosmic-blue/20 hover:border-cosmic-cyan/50'
-      } transition-all duration-300 group`}
+      className="glass rounded-lg overflow-hidden border border-cosmic-blue/20 hover:border-cosmic-cyan/50 transition-all duration-300 group"
     >
       {/* Project Image */}
       <div className="relative h-48 bg-gradient-to-br from-cosmic-blue/20 to-cosmic-cyan/20 overflow-hidden">
@@ -87,13 +83,7 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
 
       {/* Content */}
       <div className="p-6">
-        <h3
-          className={`text-2xl font-bold mb-3 ${
-            project.special
-              ? 'bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent'
-              : 'text-white'
-          }`}
-        >
+        <h3 className="text-2xl font-bold mb-3 text-white">
           {project.title}
         </h3>
 
@@ -104,11 +94,7 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
           {project.tech.map((tech) => (
             <span
               key={tech}
-              className={`px-3 py-1 rounded-full text-xs ${
-                project.special
-                  ? 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/30'
-                  : 'bg-cosmic-blue/10 text-cosmic-blue border border-cosmic-blue/30'
-              }`}
+              className="px-3 py-1 rounded-full text-xs bg-cosmic-blue/10 text-cosmic-blue border border-cosmic-blue/30"
             >
               {tech}
             </span>

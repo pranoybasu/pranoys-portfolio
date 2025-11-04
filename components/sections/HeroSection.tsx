@@ -48,9 +48,7 @@ function Starfield() {
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            count={150}
-            array={starPositions}
-            itemSize={3}
+            args={[starPositions, 3]}
           />
         </bufferGeometry>
         <pointsMaterial
@@ -67,9 +65,7 @@ function Starfield() {
         <bufferGeometry>
           <bufferAttribute
             attach="attributes-position"
-            count={100}
-            array={particlePositions}
-            itemSize={3}
+            args={[particlePositions, 3]}
           />
         </bufferGeometry>
         <pointsMaterial

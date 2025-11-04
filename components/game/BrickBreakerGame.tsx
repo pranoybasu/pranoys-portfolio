@@ -108,6 +108,7 @@ export default function BrickBreakerGame({ isOpen, onClose }: BrickBreakerGamePr
 
     // Draw functions
     function drawBall() {
+      if (!ctx) return;
       ctx.beginPath();
       ctx.arc(ball.x, ball.y, BALL_RADIUS, 0, Math.PI * 2);
       ctx.fillStyle = '#fff';
@@ -122,6 +123,7 @@ export default function BrickBreakerGame({ isOpen, onClose }: BrickBreakerGamePr
     }
 
     function drawPaddle() {
+      if (!ctx) return;
       ctx.fillStyle = '#3b82f6';
       ctx.fillRect(paddle.x, paddle.y, PADDLE_WIDTH, PADDLE_HEIGHT);
 
@@ -134,6 +136,7 @@ export default function BrickBreakerGame({ isOpen, onClose }: BrickBreakerGamePr
     }
 
     function drawBricks() {
+      if (!ctx) return;
       for (let row = 0; row < BRICK_ROWS; row++) {
         for (let col = 0; col < BRICK_COLS; col++) {
           const brick = bricks[row][col];
@@ -151,6 +154,7 @@ export default function BrickBreakerGame({ isOpen, onClose }: BrickBreakerGamePr
     }
 
     function drawScore() {
+      if (!ctx) return;
       ctx.font = '20px Space Grotesk, sans-serif';
       ctx.fillStyle = '#fff';
       ctx.fillText(`Score: ${currentScore}`, 20, 35);
@@ -159,7 +163,7 @@ export default function BrickBreakerGame({ isOpen, onClose }: BrickBreakerGamePr
 
     // Game loop
     function draw() {
-      if (!isPlaying) return;
+      if (!isPlaying || !ctx) return;
 
       // Clear canvas
       ctx.fillStyle = 'rgba(10, 14, 39, 0.3)';

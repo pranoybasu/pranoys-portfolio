@@ -58,47 +58,47 @@ export function MusicConsentModal({ onConsent }: MusicConsentModalProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-md mx-4"
+            className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-[calc(100%-2rem)] max-w-md"
           >
-            <div className="glass-strong rounded-2xl p-8 shadow-2xl border border-white/20">
+            <div className="glass-strong rounded-2xl p-6 sm:p-8 shadow-2xl border border-white/20">
               {/* Icon */}
-              <div className="flex justify-center mb-6">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cosmic-blue to-cosmic-cyan flex items-center justify-center">
-                  <Volume2 className="w-8 h-8 text-white" />
+              <div className="flex justify-center mb-4 sm:mb-6">
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-cosmic-blue to-cosmic-cyan flex items-center justify-center">
+                  <Volume2 className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
                 </div>
               </div>
 
               {/* Title */}
-              <h2 className="text-2xl font-bold text-center mb-4 bg-gradient-to-r from-cosmic-blue to-cosmic-cyan bg-clip-text text-transparent">
+              <h2 className="text-xl sm:text-2xl font-bold text-center mb-3 sm:mb-4 bg-gradient-to-r from-cosmic-blue to-cosmic-cyan bg-clip-text text-transparent">
                 Enhance Your Experience
               </h2>
 
               {/* Description */}
-              <p className="text-center text-gray-300 mb-8">
+              <p className="text-sm sm:text-base text-center text-gray-300 mb-6 sm:mb-8">
                 Would you like to enable background music for a more immersive journey through my portfolio?
               </p>
 
               {/* Buttons */}
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <button
                   onClick={() => handleChoice(false)}
-                  className="flex-1 px-6 py-3 rounded-lg border border-white/20 hover:bg-white/5 transition-all duration-300 flex items-center justify-center gap-2 group"
+                  className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg border border-white/20 hover:bg-white/5 transition-all duration-300 flex items-center justify-center gap-2 group text-sm sm:text-base"
                 >
-                  <VolumeX className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  <VolumeX className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
                   <span>No Thanks</span>
                 </button>
                 
                 <button
                   onClick={() => handleChoice(true)}
-                  className="flex-1 px-6 py-3 rounded-lg bg-gradient-to-r from-cosmic-blue to-cosmic-cyan hover:shadow-lg hover:shadow-cosmic-blue/50 transition-all duration-300 flex items-center justify-center gap-2 group font-semibold"
+                  className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg bg-gradient-to-r from-cosmic-blue to-cosmic-cyan hover:shadow-lg hover:shadow-cosmic-blue/50 transition-all duration-300 flex items-center justify-center gap-2 group font-semibold text-sm sm:text-base"
                 >
-                  <Volume2 className="w-5 h-5 group-hover:scale-110 transition-transform" />
+                  <Volume2 className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
                   <span>Yes, Play Music</span>
                 </button>
               </div>
 
               {/* Footer note */}
-              <p className="text-xs text-center text-gray-400 mt-6">
+              <p className="text-xs text-center text-gray-400 mt-4 sm:mt-6">
                 You can change this preference anytime using the music controls
               </p>
             </div>

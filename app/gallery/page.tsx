@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 // Lazy load components
 const Navigation = dynamic(() => import('@/components/layout/Navigation'));
@@ -11,15 +11,24 @@ const BackgroundAudio = dynamic(() => import('@/components/background/Background
 const CursorGlow = dynamic(() => import('@/components/effects/CursorGlow'), { ssr: false });
 
 export default function GalleryPage() {
-  // Set page title
+  const [musicConsent, setMusicConsent] = useState(false);
+
+  // Set page title and check music consent
   useEffect(() => {
     document.title = 'Personal Gallery | Pranoy Basu';
+    
+    // Check if user has already consented to music
+    const consent = localStorage.getItem('music-consent');
+    if (consent === 'true') {
+      setMusicConsent(true);
+    }
   }, []);
+
   return (
     <main className="relative min-h-screen overflow-x-hidden">
       {/* Background Elements */}
       <BackgroundVideo />
-      <BackgroundAudio />
+      <BackgroundAudio musicConsent={musicConsent} />
       <CursorGlow />
       
       {/* Navigation */}

@@ -1,115 +1,67 @@
 'use client';
 
-import { useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import * as THREE from 'three';
 import Image from 'next/image';
 
-// Enhanced starfield with more particles
-function Starfield() {
-  const starsRef = useRef<THREE.Points>(null);
-  const particlesRef = useRef<THREE.Points>(null);
-  
-  const starPositions = useMemo(() => {
-    const positions = new Float32Array(150 * 3); // 150 stars
-    for (let i = 0; i < 150; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 30; // x
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 30; // y
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 15; // z
-    }
-    return positions;
-  }, []);
-
-  const particlePositions = useMemo(() => {
-    const positions = new Float32Array(100 * 3); // 100 floating particles
-    for (let i = 0; i < 100; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 25;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 25;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 12;
-    }
-    return positions;
-  }, []);
-
-  useFrame((state) => {
-    if (starsRef.current) {
-      starsRef.current.rotation.y = state.clock.elapsedTime * 0.015;
-    }
-    if (particlesRef.current) {
-      particlesRef.current.rotation.y = -state.clock.elapsedTime * 0.01;
-      particlesRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.2) * 0.1;
-    }
-  });
-
-  return (
-    <>
-      {/* Stars */}
-      <points ref={starsRef}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[starPositions, 3]}
-          />
-        </bufferGeometry>
-        <pointsMaterial
-          size={0.08}
-          color="#3b82f6"
-          transparent
-          opacity={0.7}
-          sizeAttenuation
-        />
-      </points>
-      
-      {/* Floating Particles */}
-      <points ref={particlesRef}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[particlePositions, 3]}
-          />
-        </bufferGeometry>
-        <pointsMaterial
-          size={0.05}
-          color="#06b6d4"
-          transparent
-          opacity={0.5}
-          sizeAttenuation
-        />
-      </points>
-    </>
-  );
-}
-
-// 3D animated text component
-function AnimatedName() {
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
-      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
-    }
-  });
-
-  return (
-    <mesh ref={meshRef}>
-      <boxGeometry args={[0.1, 0.1, 0.1]} />
-      <meshStandardMaterial color="#3b82f6" />
-    </mesh>
-  );
-}
-
 export default function HeroSection() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoOpacity, setVideoOpacity] = useState(0.4);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      // Ensure video plays with proper settings
+      videoRef.current.play().catch((error) => {
+        console.log('Video autoplay was prevented:', error);
+      });
+    }
+
+    // Handle scroll to fade out video
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+      // Fade out video as user scrolls down from hero section
+      const fadeStart = windowHeight * 0.3; // Start fading at 30% scroll
+      const fadeEnd = windowHeight * 0.8; // Complete fade at 80% scroll
+      
+      if (scrollPosition < fadeStart) {
+        setVideoOpacity(0.4);
+      } else if (scrollPosition > fadeEnd) {
+        setVideoOpacity(0);
+      } else {
+        const fadeProgress = (scrollPosition - fadeStart) / (fadeEnd - fadeStart);
+        setVideoOpacity(0.4 * (1 - fadeProgress));
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* 3D Canvas Background */}
-      <div className="absolute inset-0 opacity-40">
-        <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} />
-          <Starfield />
-          <AnimatedName />
-        </Canvas>
+      {/* Background Video - Constrained to Hero Section */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-cosmic-darker via-cosmic-dark to-cosmic-darker dark:opacity-100 opacity-0 transition-opacity duration-500" />
+        <video
+          ref={videoRef}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover blur-sm transition-opacity duration-500"
+          style={{
+            filter: 'blur(4px)',
+            opacity: videoOpacity
+          }}
+        >
+          <source src="/finalvideoforPortfoliobkg.mp4" type="video/mp4" />
+        </video>
+        {/* Overlay gradient for better text readability */}
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-cosmic-darker/50 via-transparent to-cosmic-darker/80 dark:opacity-100 opacity-0 transition-opacity duration-500"
+          style={{ opacity: videoOpacity }}
+        />
       </div>
 
       {/* Content */}
@@ -152,7 +104,7 @@ export default function HeroSection() {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}
           >
-            A serious vibe coder.
+            Software Engineer
           </motion.p>
 
           <motion.div

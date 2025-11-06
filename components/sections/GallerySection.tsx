@@ -272,7 +272,7 @@ function GalleryCard({ image, index, onClick }: { image: GalleryImage; index: nu
       className="group cursor-pointer"
       onClick={onClick}
     >
-      <div className="relative aspect-square rounded-lg overflow-hidden glass border border-cosmic-blue/20 hover:border-cosmic-cyan/50 transition-all duration-300">
+      <div className="relative aspect-square rounded-lg overflow-hidden glass border border-gray-300 dark:border-cosmic-blue/20 hover:border-cosmic-blue/60 dark:hover:border-cosmic-cyan/50 transition-all duration-300">
         {/* Try to load actual image, fallback to placeholder */}
         {!imageError ? (
           <>
@@ -361,10 +361,10 @@ export default function GallerySection() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cosmic-blue to-cosmic-cyan bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cosmic-blue to-cosmic-cyan dark:from-cosmic-blue dark:to-cosmic-cyan bg-clip-text text-transparent">
             Beyond the Code
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
             A glimpse into my world outside of development - adventures, travels, and moments that inspire
           </p>
         </motion.div>
@@ -391,7 +391,7 @@ export default function GallerySection() {
           {['Adventure', 'Travel', 'Nature', 'Hobbies'].map((category) => (
             <div
               key={category}
-              className="px-4 py-2 rounded-full glass border border-cosmic-blue/30 text-gray-300 text-sm"
+              className="px-4 py-2 rounded-full glass border border-gray-300 dark:border-cosmic-blue/30 text-gray-700 dark:text-gray-300 text-sm"
             >
               {category === 'Adventure' ? '⛰️' : 
                category === 'Travel' ? '✈️' : 

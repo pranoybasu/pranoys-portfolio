@@ -129,14 +129,14 @@ export default function ContactSection() {
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cosmic-blue to-cosmic-cyan bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cosmic-blue to-cosmic-cyan dark:from-cosmic-blue dark:to-cosmic-cyan bg-clip-text text-transparent">
             Let&apos;s Connect
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
             Have a project in mind or just want to chat? I&apos;d love to hear from you!
           </p>
         </motion.div>
@@ -145,13 +145,13 @@ export default function ContactSection() {
           {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
+            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name Field */}
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Name
                 </label>
                 <input
@@ -161,8 +161,8 @@ export default function ContactSection() {
                   value={formData.name}
                   onChange={handleChange}
                   className={`w-full px-4 py-3 rounded-lg glass border ${
-                    errors.name ? 'border-red-500' : 'border-cosmic-blue/30'
-                  } bg-cosmic-darker/50 text-white placeholder-gray-500 focus:outline-none focus:border-cosmic-cyan transition-colors`}
+                    errors.name ? 'border-red-500' : 'border-gray-300 dark:border-cosmic-blue/30'
+                  } bg-white dark:bg-cosmic-darker/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-cosmic-blue dark:focus:border-cosmic-cyan transition-colors`}
                   placeholder="Your name"
                 />
                 {errors.name && <p className="mt-1 text-sm text-red-500">{errors.name}</p>}
@@ -170,7 +170,7 @@ export default function ContactSection() {
 
               {/* Email Field */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Email
                 </label>
                 <input
@@ -180,8 +180,8 @@ export default function ContactSection() {
                   value={formData.email}
                   onChange={handleChange}
                   className={`w-full px-4 py-3 rounded-lg glass border ${
-                    errors.email ? 'border-red-500' : 'border-cosmic-blue/30'
-                  } bg-cosmic-darker/50 text-white placeholder-gray-500 focus:outline-none focus:border-cosmic-cyan transition-colors`}
+                    errors.email ? 'border-red-500' : 'border-gray-300 dark:border-cosmic-blue/30'
+                  } bg-white dark:bg-cosmic-darker/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-cosmic-blue dark:focus:border-cosmic-cyan transition-colors`}
                   placeholder="your.email@example.com"
                 />
                 {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email}</p>}
@@ -189,7 +189,7 @@ export default function ContactSection() {
 
               {/* Message Field */}
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Message
                 </label>
                 <textarea
@@ -199,8 +199,8 @@ export default function ContactSection() {
                   onChange={handleChange}
                   rows={5}
                   className={`w-full px-4 py-3 rounded-lg glass border ${
-                    errors.message ? 'border-red-500' : 'border-cosmic-blue/30'
-                  } bg-cosmic-darker/50 text-white placeholder-gray-500 focus:outline-none focus:border-cosmic-cyan transition-colors resize-none`}
+                    errors.message ? 'border-red-500' : 'border-gray-300 dark:border-cosmic-blue/30'
+                  } bg-white dark:bg-cosmic-darker/50 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-cosmic-blue dark:focus:border-cosmic-cyan transition-colors resize-none`}
                   placeholder="Tell me about your project or idea..."
                 />
                 {errors.message && <p className="mt-1 text-sm text-red-500">{errors.message}</p>}
@@ -210,7 +210,7 @@ export default function ContactSection() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-cosmic-blue to-cosmic-cyan text-white font-semibold hover:shadow-lg hover:shadow-cosmic-blue/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full px-6 py-3 rounded-lg bg-gradient-to-r from-cosmic-blue to-cosmic-cyan text-white font-semibold hover:shadow-lg hover:shadow-cosmic-blue/30 dark:hover:shadow-cosmic-blue/50 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? 'Sending...' : 'Send Message'}
               </button>
@@ -231,14 +231,14 @@ export default function ContactSection() {
           {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
+            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             className="space-y-8"
           >
             {/* Social Links */}
             <div>
-              <h3 className="text-2xl font-bold text-white mb-6">Connect with me</h3>
-              <p className="text-sm text-gray-400 mb-4">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Connect with me</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
                 💡 Note: The contact form currently stores messages locally. For direct contact, please use email or LinkedIn.
               </p>
               <div className="grid grid-cols-1 gap-4">
@@ -248,19 +248,19 @@ export default function ContactSection() {
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`flex items-center gap-3 p-4 rounded-lg glass border border-cosmic-blue/30 ${social.color} transition-all duration-200 hover:border-cosmic-cyan/50`}
+                    className={`flex items-center gap-3 p-4 rounded-lg glass border border-gray-300 dark:border-cosmic-blue/30 ${social.color} transition-all duration-200 hover:border-cosmic-blue/60 dark:hover:border-cosmic-cyan/50`}
                   >
-                    <div className="text-gray-400">{social.icon}</div>
-                    <span className="text-white font-medium">{social.name}</span>
+                    <div className="text-gray-600 dark:text-gray-400">{social.icon}</div>
+                    <span className="text-gray-900 dark:text-white font-medium">{social.name}</span>
                   </a>
                 ))}
               </div>
             </div>
 
             {/* Resume Download */}
-            <div className="p-6 rounded-lg glass border border-cosmic-blue/30">
-              <h3 className="text-xl font-bold text-white mb-3">Download Resume</h3>
-              <p className="text-gray-400 mb-4">
+            <div className="p-6 rounded-lg glass border border-gray-300 dark:border-cosmic-blue/30">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">Download Resume</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-4">
                 Get a detailed overview of my experience, skills, and education.
               </p>
               <button
@@ -271,7 +271,7 @@ export default function ContactSection() {
                   link.download = 'Pranoy_Basu_Resume.pdf';
                   link.click();
                 }}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-cosmic-cyan/50 text-cosmic-cyan hover:bg-cosmic-cyan/10 transition-all duration-200 cursor-pointer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-cosmic-cyan/50 text-cosmic-cyan hover:bg-cosmic-cyan/10 dark:hover:bg-cosmic-cyan/10 transition-all duration-200 cursor-pointer"
               >
                 <svg
                   className="w-5 h-5"

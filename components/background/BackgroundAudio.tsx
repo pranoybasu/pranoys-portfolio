@@ -8,20 +8,25 @@ const playlist = [
   '/Daft_Punk_Within.mp3'
 ];
 
-export default function BackgroundAudio() {
+interface BackgroundAudioProps {
+  musicConsent: boolean;
+}
+
+export default function BackgroundAudio({ musicConsent }: BackgroundAudioProps) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [volume, setVolume] = useState(0.25); // 25% default volume
+  const [volume, setVolume] = useState(0.15); // 15% default volume
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [showControls, setShowControls] = useState(false);
 
+  // Handle music consent changes
   useEffect(() => {
-    if (audioRef.current) {
-      // Set initial volume to 60%
+    if (!audioRef.current) return;
+
+    if (musicConsent) {
+      // User consented - try to play music
       audioRef.current.volume = volume;
-      
-      // Attempt to autoplay
       const playPromise = audioRef.current.play();
       
       if (playPromise !== undefined) {
@@ -30,22 +35,17 @@ export default function BackgroundAudio() {
             setIsPlaying(true);
           })
           .catch((error) => {
-            console.log('Audio autoplay was prevented:', error);
-            // If autoplay is blocked, wait for user interaction
-            const handleFirstInteraction = () => {
-              audioRef.current?.play().then(() => {
-                setIsPlaying(true);
-              });
-              document.removeEventListener('click', handleFirstInteraction);
-              document.removeEventListener('keydown', handleFirstInteraction);
-            };
-            
-            document.addEventListener('click', handleFirstInteraction);
-            document.addEventListener('keydown', handleFirstInteraction);
+            console.log('Audio playback was prevented:', error);
           });
       }
+    } else {
+      // User declined or revoked consent - stop and mute
+      audioRef.current.pause();
+      setIsPlaying(false);
+      setIsMuted(true);
+      audioRef.current.muted = true;
     }
-  }, [volume]);
+  }, [musicConsent, volume]);
 
   // Handle track ended - play next track in playlist
   const handleTrackEnded = () => {

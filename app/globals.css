@@ -3,18 +3,37 @@
 @tailwind utilities;
 
 :root {
+  /* Dark mode colors (default) */
   --cosmic-dark: #0a0e27;
   --cosmic-darker: #060914;
   --cosmic-blue: #3b82f6;
   --cosmic-cyan: #06b6d4;
   --cosmic-pink: #ec4899;
   --cosmic-purple: #8b5cf6;
+  
+  /* Light mode colors */
+  --light-cream: #FAF8F5;
+  --light-white: #FFFFFF;
+  --light-gray-900: #1F2937;
+  --light-gray-600: #6B7280;
+  --light-gray-200: #E5E7EB;
+  --light-gray-100: #F3F4F6;
 }
 
 @layer base {
   body {
-    @apply bg-cosmic-darker text-white;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Dark mode (default) */
+  .dark body {
+    @apply bg-cosmic-darker text-white;
+  }
+  
+  /* Light mode */
+  .light body {
+    background-color: var(--light-cream);
+    color: var(--light-gray-900);
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -30,54 +49,129 @@
   .text-balance {
     text-wrap: balance;
   }
-  
-  .glass {
-    @apply bg-white/5 backdrop-blur-md border border-white/10;
-  }
-  
-  .glass-strong {
-    @apply bg-white/10 backdrop-blur-lg border border-white/20;
-  }
-  
-  .cosmic-glow {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3),
-                0 0 40px rgba(59, 130, 246, 0.15);
-  }
-  
-  .cosmic-glow-pink {
-    box-shadow: 0 0 20px rgba(236, 72, 153, 0.3),
-                0 0 40px rgba(236, 72, 153, 0.15);
-  }
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
+/* Glass morphism - theme aware */
+.glass {
+  background-color: rgba(255, 255, 255, 0.05);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-strong {
+  background-color: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.light .glass {
+  background-color: rgba(31, 41, 55, 0.05);
+  border-color: rgba(31, 41, 55, 0.1);
+}
+
+.light .glass-strong {
+  background-color: rgba(31, 41, 55, 0.1);
+  border-color: rgba(31, 41, 55, 0.2);
+}
+
+/* Glows - theme aware */
+.cosmic-glow {
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3),
+              0 0 40px rgba(59, 130, 246, 0.15);
+}
+
+.cosmic-glow-pink {
+  box-shadow: 0 0 20px rgba(236, 72, 153, 0.3),
+              0 0 40px rgba(236, 72, 153, 0.15);
+}
+
+.light .cosmic-glow {
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2),
+              0 0 30px rgba(59, 130, 246, 0.1);
+}
+
+.light .cosmic-glow-pink {
+  box-shadow: 0 0 15px rgba(236, 72, 153, 0.2),
+              0 0 30px rgba(236, 72, 153, 0.1);
+}
+
+/* Custom scrollbar - dark mode */
+.dark ::-webkit-scrollbar {
   width: 10px;
 }
 
-::-webkit-scrollbar-track {
+.dark ::-webkit-scrollbar-track {
   background: var(--cosmic-darker);
 }
 
-::-webkit-scrollbar-thumb {
+.dark ::-webkit-scrollbar-thumb {
   background: linear-gradient(180deg, var(--cosmic-blue), var(--cosmic-cyan));
   border-radius: 5px;
 }
 
-::-webkit-scrollbar-thumb:hover {
+.dark ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, var(--cosmic-cyan), var(--cosmic-blue));
 }
 
-/* Selection */
-::selection {
+/* Custom scrollbar - light mode */
+.light ::-webkit-scrollbar {
+  width: 10px;
+}
+
+.light ::-webkit-scrollbar-track {
+  background: var(--light-gray-100);
+}
+
+.light ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--cosmic-blue), var(--cosmic-cyan));
+  border-radius: 5px;
+}
+
+.light ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--cosmic-cyan), var(--cosmic-blue));
+}
+
+/* Selection - dark mode */
+.dark ::selection {
   background-color: rgba(59, 130, 246, 0.3);
   color: white;
 }
 
-/* Smooth animations */
+/* Selection - light mode */
+.light ::selection {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: var(--light-gray-900);
+}
+
+/* Smooth animations and scroll optimization */
 @media (prefers-reduced-motion: no-preference) {
-  * {
+  html {
     scroll-behavior: smooth;
+  }
+  
+  * {
+    will-change: auto;
+  }
+  
+  /* Optimize scroll performance for animated elements */
+  [class*="motion-"],
+  [class*="animate-"],
+  .glass,
+  .glass-strong {
+    will-change: transform, opacity;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

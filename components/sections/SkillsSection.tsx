@@ -10,14 +10,11 @@ const skillCategories = [
     skills: [
       'Advanced SQL',
       'JavaScript',
-      'Angular (Beginner)',
+      'TypeScript',
+      'Python',
       'No-SQL',
-      'Node.js',
-      'React (Beginner)',
-      'Co-Pilot',
-      'AWS Console',
-      'Azure Cloud',
-      'Snowflake',
+      'AWS',
+      'Azure',
       'Kubernetes',
     ],
   },
@@ -25,16 +22,13 @@ const skillCategories = [
     title: 'Tools',
     icon: '🛠️',
     skills: [
-      "Jira's",
-      'Ms Office',
-      'Smart Sheet',
       'IntelliJ',
       'Vs-Code',
       'GitLab',
       'GitHub',
       'Snowflake',
       'Open Lens',
-      'GitHub Co-pilot (both normal and agent mode applications)',
+      'Agentic AI tools',
     ],
   },
   {
@@ -69,25 +63,25 @@ function SkillCategory({ category, index }: { category: typeof skillCategories[0
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="glass p-8 rounded-lg border border-cosmic-blue/20 hover:border-cosmic-cyan/50 transition-all duration-300"
+      className="glass p-8 rounded-lg border border-gray-300 dark:border-cosmic-blue/20 hover:border-cosmic-blue/60 dark:hover:border-cosmic-cyan/50 transition-all duration-300"
     >
       <div className="flex items-center mb-6">
         <span className="text-4xl mr-4">{category.icon}</span>
-        <h3 className="text-2xl font-bold text-white">{category.title}</h3>
+        <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{category.title}</h3>
       </div>
       <div className="space-y-3">
         {category.skills.map((skill, skillIndex) => (
           <motion.div
             key={skill}
             initial={{ opacity: 0, x: -20 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
+            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
             transition={{ duration: 0.5, delay: index * 0.1 + skillIndex * 0.05 }}
             className="flex items-start"
           >
-            <span className="text-cosmic-cyan mr-2 mt-1">•</span>
-            <span className="text-gray-300">{skill}</span>
+            <span className="text-cosmic-blue dark:text-cosmic-cyan mr-2 mt-1">•</span>
+            <span className="text-gray-700 dark:text-gray-300">{skill}</span>
           </motion.div>
         ))}
       </div>
@@ -107,14 +101,14 @@ export default function SkillsSection() {
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cosmic-blue to-cosmic-cyan bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-cosmic-blue to-cosmic-cyan dark:from-cosmic-blue dark:to-cosmic-cyan bg-clip-text text-transparent">
             Skills & Expertise
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
             A comprehensive toolkit built through years of experience and continuous learning
           </p>
         </motion.div>

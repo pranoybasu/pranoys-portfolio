@@ -4,10 +4,11 @@ import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
 import { useKonamiCode } from '@/hooks/useKonamiCode';
 import { useSmoothScroll } from '@/hooks/useScrollAnimation';
+import { MusicConsentModal } from '@/components/modals/MusicConsentModal';
 
 // Lazy load heavy components
-const BackgroundVideo = dynamic(() => import('@/components/background/BackgroundVideo'), { ssr: false });
 const BackgroundAudio = dynamic(() => import('@/components/background/BackgroundAudio'), { ssr: false });
+const SpatialBackground = dynamic(() => import('@/components/background/SpatialBackground'), { ssr: false });
 const CursorGlow = dynamic(() => import('@/components/effects/CursorGlow'), { ssr: false });
 const Navigation = dynamic(() => import('@/components/layout/Navigation'));
 const HeroSection = dynamic(() => import('@/components/sections/HeroSection'));
@@ -17,8 +18,10 @@ const ProjectsSection = dynamic(() => import('@/components/sections/ProjectsSect
 const BrickBreakerSection = dynamic(() => import('@/components/sections/BrickBreakerSection'));
 const ContactSection = dynamic(() => import('@/components/sections/ContactSection'));
 const BrickBreakerGame = dynamic(() => import('@/components/game/BrickBreakerGame'), { ssr: false });
+
 export default function Home() {
   const [showGame, setShowGame] = useState(false);
+  const [musicConsent, setMusicConsent] = useState(false);
 
   // Activate Easter egg with Konami code
   useKonamiCode(() => {
@@ -35,15 +38,18 @@ export default function Home() {
       document.documentElement.style.scrollBehavior = 'auto';
     };
   }, []);
-
-  return (
-    <main className="relative min-h-screen overflow-x-hidden">
-      {/* Background Elements */}
-      <BackgroundVideo />
-      <BackgroundAudio />
-      <CursorGlow />
-      
-      {/* Navigation */}
+return (
+  <main className="relative min-h-screen overflow-x-hidden bg-cream dark:bg-cosmic-darker transition-colors duration-500">
+    {/* Music Consent Modal */}
+    <MusicConsentModal onConsent={setMusicConsent} />
+    
+    {/* Background Elements */}
+    <SpatialBackground />
+    <BackgroundAudio musicConsent={musicConsent} />
+    <CursorGlow />
+    
+    {/* Navigation */}
+    <Navigation />
       <Navigation />
       
       {/* Main Content Sections */}

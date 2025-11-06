@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 
 const navItems = [
   { name: 'Home', href: '#home', isHash: true },
@@ -79,7 +80,7 @@ export default function Navigation() {
           </motion.a>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-4">
             {navItems.map((item) => {
               const isActive = item.isHash
                 ? false
@@ -92,7 +93,7 @@ export default function Navigation() {
                   key={item.name}
                   href={item.href}
                   onClick={(e: React.MouseEvent<HTMLAnchorElement>) => handleNavClick(e, item.href, item.isHash)}
-                  className={`text-gray-300 hover:text-cosmic-cyan transition-colors duration-200 relative group ${
+                  className={`text-gray-700 dark:text-gray-300 hover:text-cosmic-blue dark:hover:text-cosmic-cyan transition-colors duration-200 relative group ${
                     isActive ? 'text-cosmic-cyan' : ''
                   }`}
                   whileHover={{ y: -2 }}
@@ -104,6 +105,7 @@ export default function Navigation() {
                 </NavLink>
               );
             })}
+            <ThemeToggle />
             <motion.button
               onClick={() => {
                 const link = document.createElement('a');
@@ -119,36 +121,39 @@ export default function Navigation() {
             </motion.button>
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg glass text-gray-300 hover:text-cosmic-cyan transition-colors"
-            aria-label="Toggle mobile menu"
-            aria-expanded={isMobileMenuOpen}
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          {/* Mobile controls */}
+          <div className="md:hidden flex items-center space-x-2">
+            <ThemeToggle />
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 text-gray-700 dark:text-gray-300 hover:text-cosmic-blue dark:hover:text-cosmic-cyan transition-colors"
+              aria-label="Toggle menu"
+              aria-expanded={isMobileMenuOpen ? 'true' : 'false'}
             >
-              {isMobileMenuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {isMobileMenuOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -174,7 +179,7 @@ export default function Navigation() {
                     key={item.name}
                     href={item.href}
                     onClick={(e: React.MouseEvent<HTMLAnchorElement>) => handleNavClick(e, item.href, item.isHash)}
-                    className={`block text-gray-300 hover:text-cosmic-cyan transition-colors duration-200 ${
+                    className={`block text-gray-700 dark:text-gray-300 hover:text-cosmic-blue dark:hover:text-cosmic-cyan transition-colors duration-200 ${
                       isActive ? 'text-cosmic-cyan' : ''
                     }`}
                     whileHover={{ x: 4 }}

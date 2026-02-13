@@ -63,7 +63,7 @@ const projects = [
     title: "Debraj's Portfolio",
     description:
       'Cinematic portfolio site featuring films, music videos, documentaries, and gallery work across Calcutta and Rome.',
-    image: '/favicon.svg',
+    image: '/projectScreenshots/Porfolio image debraj.png',
     liveUrl: 'https://debrajs-portfolio.vercel.app/',
     tech: ['Next.js', 'TypeScript', 'Portfolio', 'Creative Direction'],
     featured: true,

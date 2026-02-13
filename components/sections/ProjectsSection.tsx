@@ -12,6 +12,19 @@ interface GitHubRepo {
   open_issues_count: number;
   language: string;
 }
+
+interface Project {
+  title: string;
+  description: string;
+  image: string;
+  liveUrl: string;
+  githubUrl?: string;
+  repoName?: string;
+  repoOwner?: string;
+  tech: string[];
+  featured: boolean;
+}
+
 const projects = [
   {
     title: 'E-Store',
@@ -20,6 +33,7 @@ const projects = [
     liveUrl: 'https://e-storebackend.up.railway.app/',
     githubUrl: 'https://github.com/pranoybasu/E-store',
     repoName: 'E-store',
+    repoOwner: 'pranoybasu',
     tech: ['React', 'Node.js', 'MongoDB', 'Express', 'PayPal API', 'JWT'],
     featured: true,
   },
@@ -30,6 +44,7 @@ const projects = [
     liveUrl: 'https://global-disease-tracker.vercel.app/',
     githubUrl: 'https://github.com/pranoybasu/global-disease-tracker',
     repoName: 'global-disease-tracker',
+    repoOwner: 'pranoybasu',
     tech: ['React', 'TypeScript', 'Vite', 'TailwindCSS', 'Chart.js', 'Leaflet'],
     featured: true,
   },
@@ -40,12 +55,22 @@ const projects = [
     liveUrl: 'https://coronavirus19stats.web.app/',
     githubUrl: 'https://github.com/pranoybasu/coronavirus19stats',
     repoName: 'coronavirus19stats',
+    repoOwner: 'pranoybasu',
     tech: ['React', 'D3.js', 'Firebase', 'Material-UI', 'REST API'],
+    featured: true,
+  },
+  {
+    title: "Debraj's Portfolio",
+    description:
+      'Cinematic portfolio site featuring films, music videos, documentaries, and gallery work across Calcutta and Rome.',
+    image: '/favicon.svg',
+    liveUrl: 'https://debrajs-portfolio.vercel.app/',
+    tech: ['Next.js', 'TypeScript', 'Portfolio', 'Creative Direction'],
     featured: true,
   },
 ];
 
-function ProjectCard({ project, index }: { project: typeof projects[0]; index: number }) {
+function ProjectCard({ project, index }: { project: Project; index: number }) {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.2,
@@ -54,10 +79,11 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
   const { data: repoStats } = useQuery<GitHubRepo>({
     queryKey: ['github', project.repoName],
     queryFn: async () => {
-      const response = await fetch(`https://api.github.com/repos/pranoybasu/${project.repoName}`);
+      const response = await fetch(`https://api.github.com/repos/${project.repoOwner}/${project.repoName}`);
       if (!response.ok) throw new Error('Failed to fetch repo stats');
       return response.json();
     },
+    enabled: Boolean(project.repoName && project.repoOwner),
     staleTime: 1000 * 60 * 60, // 1 hour
   });
 
@@ -129,14 +155,16 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
           >
             Live Demo
           </a>
-          <a
-            href={project.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 rounded-lg border font-semibold transition-all duration-200 border-cosmic-blue/50 text-cosmic-blue hover:bg-cosmic-blue/10 dark:hover:bg-cosmic-blue/10"
-          >
-            GitHub
-          </a>
+          {project.githubUrl && (
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-4 py-2 rounded-lg border font-semibold transition-all duration-200 border-cosmic-blue/50 text-cosmic-blue hover:bg-cosmic-blue/10 dark:hover:bg-cosmic-blue/10"
+            >
+              GitHub
+            </a>
+          )}
         </div>
       </div>
     </motion.div>
@@ -163,7 +191,7 @@ export default function ProjectsSection() {
             Featured Projects
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-            A selection of projects showcasing my skills and passion for development
+            Pranoy&apos;s portfolio highlights full-stack engineering, data-driven interfaces, and polished user experiences built with modern web technologies.
           </p>
         </motion.div>
 

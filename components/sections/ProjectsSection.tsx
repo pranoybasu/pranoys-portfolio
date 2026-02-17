@@ -62,7 +62,7 @@ const projects = [
   {
     title: "Debraj's Portfolio",
     description:
-      'Cinematic portfolio site featuring films, music videos, documentaries, and gallery work across Calcutta and Rome.',
+      'A close school friend of mine, Debraj, I created a Cinematic portfolio site featuring films, music videos, documentaries, and gallery work across Calcutta and Rome.',
     image: '/projectScreenshots/Porfolio image debraj.png',
     liveUrl: 'https://debrajs-portfolio.vercel.app/',
     tech: ['Next.js', 'TypeScript', 'Portfolio', 'Creative Direction'],

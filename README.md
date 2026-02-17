@@ -2,7 +2,7 @@
 
 A modern, interactive developer portfolio built with **Next.js 16**, **React 19**, **Three.js**, and **Framer Motion**. Features a 3D starfield background, dark/light theming, a playable Brick Breaker game, and live GitHub integration.
 
-**Live:** [pranoybasu.vercel.app]([https://pranoybasu.vercel.app](https://pranoys-portfolio.vercel.app/))
+**Live:** [pranoybasu.vercel.app]((https://pranoys-portfolio.vercel.app/))
 
 ---
 

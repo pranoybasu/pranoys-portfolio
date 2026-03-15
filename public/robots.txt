@@ -1,0 +1,20 @@
+# Allow all robots
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://pranoybasu.vercel.app/sitemap.xml
+
+# Specific rules for crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Disallow access to private areas (none directly, but good practice)
+Disallow: /.next/
+Disallow: /node_modules/
+
+# Crawl delay to prevent server overload
+Crawl-delay: 1

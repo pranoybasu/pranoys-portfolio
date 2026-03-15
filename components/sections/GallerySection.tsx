@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
@@ -18,86 +18,86 @@ const galleryImages: GalleryImage[] = [
   {
     id: 1,
     src: '/images/gallery/1.jpeg',
-    alt: 'Gallery Image 1',
-    caption: '',
-    category: '',
+    alt: 'Portfolio gallery image 1',
+    caption: 'Gallery Image 1',
+    category: 'Portfolio',
   },
   {
     id: 2,
     src: '/images/gallery/2.jpeg',
-    alt: 'Gallery Image 2',
-    caption: '',
-    category: '',
+    alt: 'Portfolio gallery image 2',
+    caption: 'Gallery Image 2',
+    category: 'Portfolio',
   },
   {
     id: 3,
     src: '/images/gallery/3.jpeg',
-    alt: 'Gallery Image 3',
-    caption: '',
-    category: '',
+    alt: 'Portfolio gallery image 3',
+    caption: 'Gallery Image 3',
+    category: 'Portfolio',
   },
   {
     id: 4,
     src: '/images/gallery/4.jpeg',
-    alt: 'Gallery Image 4',
-    caption: '',
-    category: '',
+    alt: 'Portfolio gallery image 4',
+    caption: 'Gallery Image 4',
+    category: 'Portfolio',
   },
   {
     id: 5,
     src: '/images/gallery/5.jpeg',
-    alt: 'Gallery Image 5',
-    caption: '',
-    category: '',
+    alt: 'Portfolio gallery image 5',
+    caption: 'Gallery Image 5',
+    category: 'Portfolio',
   },
   {
     id: 6,
     src: '/images/gallery/6.jpeg',
-    alt: 'Gallery Image 6',
-    caption: '',
-    category: '',
+    alt: 'Portfolio gallery image 6',
+    caption: 'Gallery Image 6',
+    category: 'Portfolio',
   },
   {
     id: 7,
     src: '/images/gallery/7.jpeg',
-    alt: 'Gallery Image 7',
-    caption: '',
-    category: '',
+    alt: 'Portfolio gallery image 7',
+    caption: 'Gallery Image 7',
+    category: 'Portfolio',
   },
   {
     id: 8,
     src: '/images/gallery/8.jpeg',
-    alt: 'Gallery Image 8',
-    caption: '',
-    category: '',
+    alt: 'Portfolio gallery image 8',
+    caption: 'Gallery Image 8',
+    category: 'Portfolio',
   },
   {
     id: 9,
     src: '/images/gallery/9.jpeg',
-    alt: 'Gallery Image 9',
-    caption: '',
-    category: '',
+    alt: 'Portfolio gallery image 9',
+    caption: 'Gallery Image 9',
+    category: 'Portfolio',
   },
   {
     id: 10,
     src: '/images/gallery/10.jpeg',
-    alt: 'Gallery Image 10',
-    caption: '',
-    category: '',
+    alt: 'Portfolio gallery image 10',
+    caption: 'Gallery Image 10',
+    category: 'Portfolio',
   },
   {
     id: 11,
     src: '/images/gallery/11.jpeg',
-    alt: 'Gallery Image 11',
-    caption: '',
-    category: '',
+    alt: 'Portfolio gallery image 11',
+    caption: 'Gallery Image 11',
+    category: 'Portfolio',
   },
   {
     id: 12,
     src: '/images/gallery/12.jpeg',
-    alt: 'Gallery Image 12',
-    caption: '',
-    category: '',
+    alt: 'Portfolio gallery image 12',
+    caption: 'Gallery Image 12',
+    category: 'Portfolio',
   },
 ];
 
@@ -256,6 +256,7 @@ function LightboxImage({ image }: { image: GalleryImage }) {
 }
 
 function GalleryCard({ image, index, onClick }: { image: GalleryImage; index: number; onClick: () => void }) {
+  const [isClient, setIsClient] = useState(false);
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.2,
@@ -263,11 +264,17 @@ function GalleryCard({ image, index, onClick }: { image: GalleryImage; index: nu
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const shouldAnimate = isClient && inView;
+
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, scale: 0.9 }}
-      animate={inView ? { opacity: 1, scale: 1 } : {}}
+      animate={shouldAnimate ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className="group cursor-pointer"
       onClick={onClick}
@@ -332,10 +339,17 @@ function GalleryCard({ image, index, onClick }: { image: GalleryImage; index: nu
 
 export default function GallerySection() {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+  const [isClient, setIsClient] = useState(false);
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const shouldAnimate = isClient && inView;
 
   const handleNext = () => {
     if (!selectedImage) return;
@@ -357,7 +371,7 @@ export default function GallerySection() {
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
@@ -384,7 +398,7 @@ export default function GallerySection() {
         {/* Category Legend */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
+          animate={shouldAnimate ? { opacity: 1 } : { opacity: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
           className="mt-12 flex flex-wrap justify-center gap-4"
         >

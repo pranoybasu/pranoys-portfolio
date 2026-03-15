@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
@@ -58,11 +58,18 @@ export default function ContactSection() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [isClient, setIsClient] = useState(false);
 
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const shouldAnimate = isClient && inView;
 
   const validateForm = (): boolean => {
     const newErrors: FormErrors = {};
@@ -95,23 +102,36 @@ export default function ContactSection() {
     setIsSubmitting(true);
     setSubmitStatus('idle');
 
-    // Note: This form currently stores messages in the browser only.
-    // To receive messages via email, integrate with a backend service like:
-    // - EmailJS, SendGrid, or Resend for email delivery
-    // - Or build a custom API endpoint with nodemailer
-    
-    // For now, simulate form submission
-    setTimeout(() => {
-      console.log('Form submission (not sent to email):', formData);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', message: '' });
+        console.log('Message sent:', data);
+        
+        // Reset success message after 5 seconds
+        setTimeout(() => {
+          setSubmitStatus('idle');
+        }, 5000);
+      } else {
+        setSubmitStatus('error');
+        console.error('Form submission error:', data);
+      }
+    } catch (error) {
+      setSubmitStatus('error');
+      console.error('Form submission failed:', error);
+    } finally {
       setIsSubmitting(false);
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', message: '' });
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        setSubmitStatus('idle');
-      }, 5000);
-    }, 1500);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -129,7 +149,7 @@ export default function ContactSection() {
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
@@ -145,7 +165,7 @@ export default function ContactSection() {
           {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
-            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+            animate={shouldAnimate ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -231,7 +251,7 @@ export default function ContactSection() {
           {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
-            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+            animate={shouldAnimate ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             className="space-y-8"
           >

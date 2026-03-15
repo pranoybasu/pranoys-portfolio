@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
@@ -104,6 +105,47 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth" suppressHydrationWarning>
+      <Script
+        id="json-ld-person"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            'name': 'Pranoy Basu',
+            'url': 'https://pranoybasu.vercel.app',
+            'image': 'https://pranoybasu.vercel.app/images/main/profile.jpg',
+            'jobTitle': 'Software Engineer & Creative Developer',
+            'description': 'Full-stack software engineer specializing in modern web technologies, React, Next.js, TypeScript, Three.js, and creative interactive experiences.',
+            'sameAs': [
+              'https://github.com/pranoybasu',
+              'https://www.linkedin.com/in/pranoy-basu-401b10198/'
+            ],
+            'email': 'pranoybasuch@gmail.com',
+            'knowsAbout': ['React', 'Next.js', 'TypeScript', 'Three.js', 'Node.js', 'MongoDB', 'Full-Stack Development', 'Web Development']
+          })
+        }}
+      />
+      <Script
+        id="json-ld-website"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            'name': 'Pranoy Basu - Software Engineer Portfolio',
+            'url': 'https://pranoybasu.vercel.app',
+            'potentialAction': {
+              '@type': 'SearchAction',
+              'target': {
+                '@type': 'EntryPoint',
+                'urlTemplate': 'https://pranoybasu.vercel.app/?q={search_term_string}'
+              },
+              'query-input': 'required name=search_term_string'
+            }
+          })
+        }}
+      />
       <body
         className={`${spaceGrotesk.variable} ${inter.variable} font-sans antialiased`}
         suppressHydrationWarning

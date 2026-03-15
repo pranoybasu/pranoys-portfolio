@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useQuery } from '@tanstack/react-query';
@@ -71,10 +71,17 @@ const projects = [
 ];
 
 function ProjectCard({ project, index }: { project: Project; index: number }) {
+  const [isClient, setIsClient] = useState(false);
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.2,
   });
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const shouldAnimate = isClient && inView;
 
   const { data: repoStats } = useQuery<GitHubRepo>({
     queryKey: ['github', project.repoName],
@@ -91,7 +98,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 50 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
       className="glass rounded-lg overflow-hidden border border-gray-300 dark:border-cosmic-blue/20 hover:border-cosmic-blue/60 dark:hover:border-cosmic-cyan/50 transition-all duration-300 group"
     >
@@ -172,10 +179,17 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 }
 
 export default function ProjectsSection() {
+  const [isClient, setIsClient] = useState(false);
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const shouldAnimate = isClient && inView;
 
   return (
     <section id="projects" className="relative py-24 px-4">
@@ -183,7 +197,7 @@ export default function ProjectsSection() {
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >

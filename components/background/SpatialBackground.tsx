@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -389,6 +389,48 @@ function SpatialObjects() {
 }
 
 export default function SpatialBackground() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    // Mark as client after hydration
+    setIsClient(true);
+    
+    // Check if device is mobile based on screen size
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // On server and during hydration, render the 3D background
+  // After client-side detection, render mobile-optimized version if needed
+  if (!isClient) {
+    // Server-side or initial hydration - render 3D background
+    return (
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <Canvas camera={{ position: [0, 0, 8], fov: 75 }}>
+          <ambientLight intensity={0.4} />
+          <pointLight position={[10, 10, 10]} intensity={0.5} />
+          <pointLight position={[-10, -10, -5]} intensity={0.3} />
+          <Starfield />
+          <SpatialObjects />
+        </Canvas>
+      </div>
+    );
+  }
+
+  // After hydration, on mobile devices, render lightweight gradient
+  if (isMobile) {
+    return (
+      <div className="fixed inset-0 pointer-events-none z-0 bg-gradient-to-b from-cosmic-darker via-cosmic-dark to-cosmic-darker" />
+    );
+  }
+
+  // On desktop, render full 3D background
   return (
     <div className="fixed inset-0 pointer-events-none z-0">
       <Canvas camera={{ position: [0, 0, 8], fov: 75 }}>

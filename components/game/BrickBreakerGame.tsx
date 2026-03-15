@@ -280,7 +280,15 @@ export default function BrickBreakerGame({ isOpen, onClose }: BrickBreakerGamePr
                 width={800}
                 height={600}
                 className="w-full h-auto bg-cosmic-darker"
+                role="img"
+                aria-label={`Brick Breaker Game - Score: ${score}, Lives: ${lives}`}
+                aria-describedby="game-instructions"
               />
+
+              {/* Game Instructions for Accessibility */}
+              <div id="game-instructions" className="sr-only">
+                Control the paddle with your mouse or touch to break all bricks. You have 3 lives. Break all bricks to win the game.
+              </div>
 
               {/* Game Over Overlay */}
               {gameState !== 'playing' && (

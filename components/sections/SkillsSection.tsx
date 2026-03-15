@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 
@@ -54,16 +55,23 @@ const skillCategories = [
 ];
 
 function SkillCategory({ category, index }: { category: typeof skillCategories[0]; index: number }) {
+  const [isClient, setIsClient] = useState(false);
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.2,
   });
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const shouldAnimate = isClient && inView;
+
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
       className="glass p-8 rounded-lg border border-gray-300 dark:border-cosmic-blue/20 hover:border-cosmic-blue/60 dark:hover:border-cosmic-cyan/50 transition-all duration-300"
     >
@@ -76,7 +84,7 @@ function SkillCategory({ category, index }: { category: typeof skillCategories[0
           <motion.div
             key={skill}
             initial={{ opacity: 0, x: -20 }}
-            animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+            animate={shouldAnimate ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
             transition={{ duration: 0.5, delay: index * 0.1 + skillIndex * 0.05 }}
             className="flex items-start"
           >
@@ -90,10 +98,17 @@ function SkillCategory({ category, index }: { category: typeof skillCategories[0
 }
 
 export default function SkillsSection() {
+  const [isClient, setIsClient] = useState(false);
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const shouldAnimate = isClient && inView;
 
   return (
     <section id="skills" className="relative py-24 px-4">
@@ -101,7 +116,7 @@ export default function SkillsSection() {
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >

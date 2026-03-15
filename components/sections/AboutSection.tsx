@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import Image from 'next/image';
@@ -138,16 +139,23 @@ function ExperienceCard({
   index: number;
   type?: 'professional' | 'internship' | 'education';
 }) {
+  const [isClient, setIsClient] = useState(false);
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.2,
   });
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const shouldAnimate = isClient && inView;
+
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 30 }}
-      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className="glass p-4 sm:p-6 rounded-lg border border-gray-300 dark:border-cosmic-blue/20 hover:border-cosmic-blue/60 dark:hover:border-cosmic-cyan/50 transition-all duration-300"
     >
@@ -197,10 +205,17 @@ function ExperienceCard({
 }
 
 export default function AboutSection() {
+  const [isClient, setIsClient] = useState(false);
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const shouldAnimate = isClient && inView;
 
   return (
     <section id="about" className="relative py-24 px-4">
@@ -208,7 +223,7 @@ export default function AboutSection() {
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >

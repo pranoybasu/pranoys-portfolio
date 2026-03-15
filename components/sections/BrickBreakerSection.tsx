@@ -1,16 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import BrickBreakerGame from '../game/BrickBreakerGame';
 
 export default function BrickBreakerSection() {
   const [showGame, setShowGame] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.2,
   });
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // During hydration, always render with initial state (no animation)
+  // After hydration, animate based on inView
+  const shouldAnimate = isClient && inView;
 
   return (
     <section id="brick-breaker" className="relative py-24 px-4">
@@ -18,7 +27,7 @@ export default function BrickBreakerSection() {
         <motion.div
           ref={ref}
           initial={{ opacity: 0, y: 30 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
+          animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.6 }}
           className="glass rounded-2xl p-8 md:p-12 border-2 border-yellow-500/30 hover:border-yellow-400/50 dark:hover:border-yellow-400/50 transition-all duration-300 bg-gradient-to-br from-yellow-500/5 to-orange-500/5 dark:from-yellow-500/5 dark:to-orange-500/5"
         >
@@ -26,7 +35,7 @@ export default function BrickBreakerSection() {
           <div className="text-center mb-8">
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
-              animate={inView ? { scale: 1, opacity: 1 } : {}}
+              animate={shouldAnimate ? { scale: 1, opacity: 1 } : { scale: 0.9, opacity: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               className="inline-block mb-4"
             >
@@ -64,7 +73,7 @@ export default function BrickBreakerSection() {
           {/* Play Button */}
           <motion.div
             initial={{ scale: 0.95, opacity: 0 }}
-            animate={inView ? { scale: 1, opacity: 1 } : {}}
+            animate={shouldAnimate ? { scale: 1, opacity: 1 } : { scale: 0.95, opacity: 0 }}
             transition={{ duration: 0.5, delay: 0.4 }}
             className="text-center"
           >
@@ -106,7 +115,7 @@ export default function BrickBreakerSection() {
           {!showGame && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
+              animate={shouldAnimate ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.5, delay: 0.6 }}
               className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4 text-center"
             >

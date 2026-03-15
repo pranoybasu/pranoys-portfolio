@@ -39,7 +39,7 @@ export default function Home() {
     };
   }, []);
 return (
-  <main className="relative min-h-screen overflow-x-hidden bg-cream dark:bg-cosmic-darker transition-colors duration-500">
+  <main className="relative min-h-screen overflow-x-hidden bg-cream dark:bg-cosmic-darker transition-colors duration-500" suppressHydrationWarning>
     {/* Music Consent Modal */}
     <MusicConsentModal onConsent={setMusicConsent} />
     
@@ -50,7 +50,6 @@ return (
     
     {/* Navigation */}
     <Navigation />
-      <Navigation />
       
       {/* Main Content Sections */}
       <HeroSection />

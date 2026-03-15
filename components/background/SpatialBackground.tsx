@@ -2,25 +2,25 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
+import { useTheme } from 'next-themes';
 import * as THREE from 'three';
 
-// Starfield component with stars and particles
-function Starfield() {
+function Starfield({ lightMode }: { lightMode: boolean }) {
   const starsRef = useRef<THREE.Points>(null);
   const particlesRef = useRef<THREE.Points>(null);
   
   const starPositions = (() => {
-    const positions = new Float32Array(200 * 3); // 200 stars
+    const positions = new Float32Array(200 * 3);
     for (let i = 0; i < 200; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 50; // x
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 50; // y
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 20; // z
+      positions[i * 3] = (Math.random() - 0.5) * 50;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 50;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
     }
     return positions;
   })();
 
   const particlePositions = (() => {
-    const positions = new Float32Array(150 * 3); // 150 floating particles
+    const positions = new Float32Array(150 * 3);
     for (let i = 0; i < 150; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 40;
       positions[i * 3 + 1] = (Math.random() - 0.5) * 40;
@@ -39,9 +39,13 @@ function Starfield() {
     }
   });
 
+  const starOpacity = lightMode ? 0.15 : 0.6;
+  const particleOpacity = lightMode ? 0.1 : 0.4;
+  const starColor = lightMode ? '#6366f1' : '#3b82f6';
+  const particleColor = lightMode ? '#8b5cf6' : '#06b6d4';
+
   return (
     <>
-      {/* Stars */}
       <points ref={starsRef}>
         <bufferGeometry>
           <bufferAttribute
@@ -51,14 +55,13 @@ function Starfield() {
         </bufferGeometry>
         <pointsMaterial
           size={0.06}
-          color="#3b82f6"
+          color={starColor}
           transparent
-          opacity={0.6}
+          opacity={starOpacity}
           sizeAttenuation
         />
       </points>
       
-      {/* Floating Particles */}
       <points ref={particlesRef}>
         <bufferGeometry>
           <bufferAttribute
@@ -68,9 +71,9 @@ function Starfield() {
         </bufferGeometry>
         <pointsMaterial
           size={0.04}
-          color="#06b6d4"
+          color={particleColor}
           transparent
-          opacity={0.4}
+          opacity={particleOpacity}
           sizeAttenuation
         />
       </points>
@@ -78,8 +81,7 @@ function Starfield() {
   );
 }
 
-// Enhanced 3D spatial objects with distinct geometric shapes
-function SpatialObjects() {
+function SpatialObjects({ lightMode }: { lightMode: boolean }) {
   const sphere1Ref = useRef<THREE.Mesh>(null);
   const sphere2Ref = useRef<THREE.Mesh>(null);
   const sphere3Ref = useRef<THREE.Mesh>(null);
@@ -95,10 +97,11 @@ function SpatialObjects() {
   const icosahedronRef = useRef<THREE.Mesh>(null);
   const coneRef = useRef<THREE.Mesh>(null);
 
+  const o = lightMode ? 0.12 : 1;
+
   useFrame((state) => {
     const time = state.clock.elapsedTime;
 
-    // Sphere 1 - Blue wireframe (top left area)
     if (sphere1Ref.current) {
       sphere1Ref.current.rotation.x = time * 0.2;
       sphere1Ref.current.rotation.y = time * 0.3;
@@ -106,7 +109,6 @@ function SpatialObjects() {
       sphere1Ref.current.position.x = Math.cos(time * 0.3) * 1.5 - 5;
     }
 
-    // Sphere 2 - Cyan solid (right side)
     if (sphere2Ref.current) {
       sphere2Ref.current.rotation.x = -time * 0.15;
       sphere2Ref.current.rotation.y = time * 0.25;
@@ -114,7 +116,6 @@ function SpatialObjects() {
       sphere2Ref.current.position.x = Math.sin(time * 0.4) * 1.2 + 6;
     }
 
-    // Sphere 3 - Green (bottom center)
     if (sphere3Ref.current) {
       sphere3Ref.current.rotation.x = time * 0.18;
       sphere3Ref.current.rotation.y = -time * 0.22;
@@ -122,7 +123,6 @@ function SpatialObjects() {
       sphere3Ref.current.position.x = Math.cos(time * 0.35) * 2;
     }
 
-    // Torus 1 - Pink (center area)
     if (torusRef.current) {
       torusRef.current.rotation.x = time * 0.4;
       torusRef.current.rotation.y = time * 0.3;
@@ -131,7 +131,6 @@ function SpatialObjects() {
       torusRef.current.position.z = Math.cos(time * 0.3) * 1 - 3;
     }
 
-    // Torus 2 - Orange (right bottom)
     if (torus2Ref.current) {
       torus2Ref.current.rotation.x = -time * 0.35;
       torus2Ref.current.rotation.y = time * 0.25;
@@ -140,7 +139,6 @@ function SpatialObjects() {
       torus2Ref.current.position.x = Math.sin(time * 0.3) * 1.8 + 5;
     }
 
-    // Octahedron 1 - Violet (top right)
     if (octahedronRef.current) {
       octahedronRef.current.rotation.x = time * 0.25;
       octahedronRef.current.rotation.y = time * 0.35;
@@ -149,7 +147,6 @@ function SpatialObjects() {
       octahedronRef.current.position.z = Math.sin(time * 0.4) * 1;
     }
 
-    // Octahedron 2 - Purple (left side)
     if (octahedron2Ref.current) {
       octahedron2Ref.current.rotation.x = -time * 0.28;
       octahedron2Ref.current.rotation.y = time * 0.32;
@@ -157,7 +154,6 @@ function SpatialObjects() {
       octahedron2Ref.current.position.x = Math.sin(time * 0.48) * 1.5 - 6;
     }
 
-    // Dodecahedron 1 - Teal wireframe (bottom left)
     if (dodecahedronRef.current) {
       dodecahedronRef.current.rotation.x = time * 0.18;
       dodecahedronRef.current.rotation.y = time * 0.22;
@@ -166,7 +162,6 @@ function SpatialObjects() {
       dodecahedronRef.current.position.x = Math.sin(time * 0.35) * 2 - 4;
     }
 
-    // Dodecahedron 2 - Aqua (center right)
     if (dodecahedron2Ref.current) {
       dodecahedron2Ref.current.rotation.x = -time * 0.2;
       dodecahedron2Ref.current.rotation.y = time * 0.24;
@@ -175,7 +170,6 @@ function SpatialObjects() {
       dodecahedron2Ref.current.position.x = Math.cos(time * 0.38) * 1.4 + 6;
     }
 
-    // Cube 1 - Indigo (top center)
     if (cubeRef.current) {
       cubeRef.current.rotation.x = time * 0.3;
       cubeRef.current.rotation.y = time * 0.2;
@@ -184,7 +178,6 @@ function SpatialObjects() {
       cubeRef.current.position.z = Math.sin(time * 0.5) * 1.5 + 1;
     }
 
-    // Cube 2 - Blue solid (left bottom)
     if (cube2Ref.current) {
       cube2Ref.current.rotation.x = -time * 0.25;
       cube2Ref.current.rotation.y = time * 0.28;
@@ -192,7 +185,6 @@ function SpatialObjects() {
       cube2Ref.current.position.x = Math.sin(time * 0.42) * 1.6 - 5;
     }
 
-    // Tetrahedron - Yellow (far right)
     if (tetrahedronRef.current) {
       tetrahedronRef.current.rotation.x = time * 0.35;
       tetrahedronRef.current.rotation.y = time * 0.4;
@@ -201,7 +193,6 @@ function SpatialObjects() {
       tetrahedronRef.current.position.x = Math.cos(time * 0.45) * 1.8 + 7;
     }
 
-    // Icosahedron - Lime (top far left)
     if (icosahedronRef.current) {
       icosahedronRef.current.rotation.x = time * 0.22;
       icosahedronRef.current.rotation.y = -time * 0.26;
@@ -209,7 +200,6 @@ function SpatialObjects() {
       icosahedronRef.current.position.x = Math.sin(time * 0.36) * 1.4 - 7;
     }
 
-    // Cone - Red (bottom far right)
     if (coneRef.current) {
       coneRef.current.rotation.x = time * 0.28;
       coneRef.current.rotation.z = time * 0.32;
@@ -220,225 +210,124 @@ function SpatialObjects() {
 
   return (
     <>
-      {/* Sphere 1 - Blue wireframe */}
       <mesh ref={sphere1Ref} position={[-5, 3, -2]}>
         <sphereGeometry args={[0.5, 32, 32]} />
-        <meshStandardMaterial
-          color="#3b82f6"
-          wireframe
-          transparent
-          opacity={0.5}
-        />
+        <meshStandardMaterial color="#3b82f6" wireframe transparent opacity={0.5 * o} />
       </mesh>
 
-      {/* Sphere 2 - Cyan solid */}
       <mesh ref={sphere2Ref} position={[6, 0, -2]}>
         <sphereGeometry args={[0.4, 32, 32]} />
-        <meshStandardMaterial
-          color="#06b6d4"
-          transparent
-          opacity={0.6}
-          metalness={0.5}
-          roughness={0.2}
-        />
+        <meshStandardMaterial color="#06b6d4" transparent opacity={0.6 * o} metalness={0.5} roughness={0.2} />
       </mesh>
 
-      {/* Sphere 3 - Green */}
       <mesh ref={sphere3Ref} position={[0, -4, -1]}>
         <sphereGeometry args={[0.45, 32, 32]} />
-        <meshStandardMaterial
-          color="#10b981"
-          transparent
-          opacity={0.55}
-          metalness={0.6}
-          roughness={0.3}
-        />
+        <meshStandardMaterial color="#10b981" transparent opacity={0.55 * o} metalness={0.6} roughness={0.3} />
       </mesh>
 
-      {/* Torus 1 - Pink */}
       <mesh ref={torusRef} position={[0, 1, -3]}>
         <torusGeometry args={[0.5, 0.18, 16, 32]} />
-        <meshStandardMaterial
-          color="#ec4899"
-          transparent
-          opacity={0.5}
-          metalness={0.6}
-          roughness={0.3}
-        />
+        <meshStandardMaterial color="#ec4899" transparent opacity={0.5 * o} metalness={0.6} roughness={0.3} />
       </mesh>
 
-      {/* Torus 2 - Orange */}
       <mesh ref={torus2Ref} position={[5, -3, -2]}>
         <torusGeometry args={[0.45, 0.16, 16, 32]} />
-        <meshStandardMaterial
-          color="#f97316"
-          transparent
-          opacity={0.55}
-          metalness={0.5}
-          roughness={0.4}
-        />
+        <meshStandardMaterial color="#f97316" transparent opacity={0.55 * o} metalness={0.5} roughness={0.4} />
       </mesh>
 
-      {/* Octahedron 1 - Violet */}
       <mesh ref={octahedronRef} position={[4, 4, -1]}>
         <octahedronGeometry args={[0.4]} />
-        <meshStandardMaterial
-          color="#8b5cf6"
-          transparent
-          opacity={0.6}
-          metalness={0.7}
-          roughness={0.2}
-        />
+        <meshStandardMaterial color="#8b5cf6" transparent opacity={0.6 * o} metalness={0.7} roughness={0.2} />
       </mesh>
 
-      {/* Octahedron 2 - Purple */}
       <mesh ref={octahedron2Ref} position={[-6, -1, -1]}>
         <octahedronGeometry args={[0.38]} />
-        <meshStandardMaterial
-          color="#a855f7"
-          transparent
-          opacity={0.58}
-          metalness={0.65}
-          roughness={0.25}
-        />
+        <meshStandardMaterial color="#a855f7" transparent opacity={0.58 * o} metalness={0.65} roughness={0.25} />
       </mesh>
 
-      {/* Dodecahedron 1 - Teal wireframe */}
       <mesh ref={dodecahedronRef} position={[-4, -4, -1]}>
         <dodecahedronGeometry args={[0.35]} />
-        <meshStandardMaterial
-          color="#14b8a6"
-          wireframe
-          transparent
-          opacity={0.5}
-        />
+        <meshStandardMaterial color="#14b8a6" wireframe transparent opacity={0.5 * o} />
       </mesh>
 
-      {/* Dodecahedron 2 - Aqua */}
       <mesh ref={dodecahedron2Ref} position={[6, 2, -2]}>
         <dodecahedronGeometry args={[0.38]} />
-        <meshStandardMaterial
-          color="#06b6d4"
-          transparent
-          opacity={0.52}
-          metalness={0.55}
-          roughness={0.35}
-        />
+        <meshStandardMaterial color="#06b6d4" transparent opacity={0.52 * o} metalness={0.55} roughness={0.35} />
       </mesh>
 
-      {/* Cube 1 - Indigo */}
       <mesh ref={cubeRef} position={[0, 5, 1]}>
         <boxGeometry args={[0.4, 0.4, 0.4]} />
-        <meshStandardMaterial
-          color="#6366f1"
-          transparent
-          opacity={0.6}
-          metalness={0.4}
-          roughness={0.4}
-        />
+        <meshStandardMaterial color="#6366f1" transparent opacity={0.6 * o} metalness={0.4} roughness={0.4} />
       </mesh>
 
-      {/* Cube 2 - Blue solid */}
       <mesh ref={cube2Ref} position={[-5, -5, 0]}>
         <boxGeometry args={[0.42, 0.42, 0.42]} />
-        <meshStandardMaterial
-          color="#3b82f6"
-          transparent
-          opacity={0.58}
-          metalness={0.45}
-          roughness={0.38}
-        />
+        <meshStandardMaterial color="#3b82f6" transparent opacity={0.58 * o} metalness={0.45} roughness={0.38} />
       </mesh>
 
-      {/* Tetrahedron - Yellow */}
       <mesh ref={tetrahedronRef} position={[7, 1, -1]}>
         <tetrahedronGeometry args={[0.4]} />
-        <meshStandardMaterial
-          color="#eab308"
-          transparent
-          opacity={0.54}
-          metalness={0.6}
-          roughness={0.3}
-        />
+        <meshStandardMaterial color="#eab308" transparent opacity={0.54 * o} metalness={0.6} roughness={0.3} />
       </mesh>
 
-      {/* Icosahedron - Lime wireframe */}
       <mesh ref={icosahedronRef} position={[-7, 5, -2]}>
         <icosahedronGeometry args={[0.38]} />
-        <meshStandardMaterial
-          color="#84cc16"
-          wireframe
-          transparent
-          opacity={0.48}
-        />
+        <meshStandardMaterial color="#84cc16" wireframe transparent opacity={0.48 * o} />
       </mesh>
 
-      {/* Cone - Red */}
       <mesh ref={coneRef} position={[7, -5, -1]}>
         <coneGeometry args={[0.35, 0.7, 32]} />
-        <meshStandardMaterial
-          color="#ef4444"
-          transparent
-          opacity={0.56}
-          metalness={0.5}
-          roughness={0.35}
-        />
+        <meshStandardMaterial color="#ef4444" transparent opacity={0.56 * o} metalness={0.5} roughness={0.35} />
       </mesh>
     </>
   );
 }
 
 export default function SpatialBackground() {
+  const { theme } = useTheme();
   const [isMobile, setIsMobile] = useState(false);
-  const [isClient, setIsClient] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Mark as client after hydration
-    setIsClient(true);
-    
-    // Check if device is mobile based on screen size
+    setMounted(true);
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768); // md breakpoint
+      setIsMobile(window.innerWidth < 768);
     };
-
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // On server and during hydration, render the 3D background
-  // After client-side detection, render mobile-optimized version if needed
-  if (!isClient) {
-    // Server-side or initial hydration - render 3D background
+  const isLight = mounted && theme === 'light';
+
+  if (!mounted) {
     return (
       <div className="fixed inset-0 pointer-events-none z-0">
         <Canvas camera={{ position: [0, 0, 8], fov: 75 }}>
           <ambientLight intensity={0.4} />
           <pointLight position={[10, 10, 10]} intensity={0.5} />
           <pointLight position={[-10, -10, -5]} intensity={0.3} />
-          <Starfield />
-          <SpatialObjects />
+          <Starfield lightMode={false} />
+          <SpatialObjects lightMode={false} />
         </Canvas>
       </div>
     );
   }
 
-  // After hydration, on mobile devices, render lightweight gradient
   if (isMobile) {
     return (
-      <div className="fixed inset-0 pointer-events-none z-0 bg-gradient-to-b from-cosmic-darker via-cosmic-dark to-cosmic-darker" />
+      <div className="fixed inset-0 pointer-events-none z-0 bg-gradient-to-b from-white via-gray-50 to-white dark:from-cosmic-darker dark:via-cosmic-dark dark:to-cosmic-darker" />
     );
   }
 
-  // On desktop, render full 3D background
   return (
     <div className="fixed inset-0 pointer-events-none z-0">
       <Canvas camera={{ position: [0, 0, 8], fov: 75 }}>
-        <ambientLight intensity={0.4} />
-        <pointLight position={[10, 10, 10]} intensity={0.5} />
-        <pointLight position={[-10, -10, -5]} intensity={0.3} />
-        <Starfield />
-        <SpatialObjects />
+        <ambientLight intensity={isLight ? 0.6 : 0.4} />
+        <pointLight position={[10, 10, 10]} intensity={isLight ? 0.3 : 0.5} />
+        <pointLight position={[-10, -10, -5]} intensity={isLight ? 0.2 : 0.3} />
+        <Starfield lightMode={isLight} />
+        <SpatialObjects lightMode={isLight} />
       </Canvas>
     </div>
   );

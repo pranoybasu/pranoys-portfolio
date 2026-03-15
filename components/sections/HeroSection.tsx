@@ -42,7 +42,7 @@ export default function HeroSection() {
     <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Background Video - Constrained to Hero Section */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute inset-0 bg-gradient-to-b from-cosmic-darker via-cosmic-dark to-cosmic-darker dark:opacity-100 opacity-0 transition-opacity duration-500" />
+        <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-cream/50 to-white/80 dark:from-cosmic-darker dark:via-cosmic-dark dark:to-cosmic-darker transition-opacity duration-500" />
         <video
           ref={videoRef}
           autoPlay
@@ -59,7 +59,7 @@ export default function HeroSection() {
         </video>
         {/* Overlay gradient for better text readability */}
         <div
-          className="absolute inset-0 bg-gradient-to-b from-cosmic-darker/50 via-transparent to-cosmic-darker/80 dark:opacity-100 opacity-0 transition-opacity duration-500"
+          className="absolute inset-0 bg-gradient-to-b from-white/60 via-transparent to-white/70 dark:from-cosmic-darker/50 dark:via-transparent dark:to-cosmic-darker/80 transition-opacity duration-500"
           style={{ opacity: videoOpacity }}
         />
       </div>
@@ -99,7 +99,7 @@ export default function HeroSection() {
           </motion.h1>
 
           <motion.p
-            className="text-2xl md:text-3xl text-gray-300 mb-8"
+            className="text-2xl md:text-3xl text-gray-600 dark:text-gray-300 mb-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.8 }}

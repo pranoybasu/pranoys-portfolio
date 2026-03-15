@@ -60,7 +60,7 @@ return (
       <ContactSection />
       
       {/* Footer */}
-      <footer className="relative z-10 py-8 text-center text-white/50 text-sm">
+      <footer className="relative z-10 py-8 text-center text-gray-500 dark:text-white/50 text-sm">
         <p>&copy; {new Date().getFullYear()} Pranoy Basu. All rights reserved.</p>
       </footer>
 

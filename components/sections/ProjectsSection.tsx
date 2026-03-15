@@ -27,6 +27,17 @@ interface Project {
 
 const projects = [
   {
+    title: 'Noctua',
+    description: 'AI-powered PR intelligence platform that summarizes pull requests, runs security scans, and builds Code DNA fingerprints per author with configurable review personas.',
+    image: '/projectScreenshots/noctua-dashboard.png',
+    liveUrl: 'https://noctua-sand.vercel.app',
+    githubUrl: 'https://github.com/pranoybasu/noctua',
+    repoName: 'noctua',
+    repoOwner: 'pranoybasu',
+    tech: ['Next.js', 'React', 'Python', 'FastAPI', 'Supabase', 'Groq AI'],
+    featured: true,
+  },
+  {
     title: 'E-Store',
     description: 'Full-stack e-commerce platform with PayPal integration, user authentication, and admin dashboard. Features product management, shopping cart, and order tracking.',
     image: '/projectScreenshots/e-store image.png',
